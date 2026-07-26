@@ -40,10 +40,12 @@ export DEDNETS_TOKEN
 # 3. Find the CLI. First hit wins; nothing is downloaded here.
 #    TN-59: add `npx -y @dednets/mcp` to this chain (one line) once the package
 #    is published; it belongs after PATH so a locally installed CLI still wins.
+#    Every name is defaulted: under `set -u` an unset HOME would otherwise abort
+#    the whole wrapper, killing the server even when the CLI is on PATH.
 ctl=''
 for cand in \
     "${DEDNETSCTL:-}" \
-    "$HOME/Applications/Haunted.app/Contents/MacOS/dednetsctl" \
+    "${HOME:-}/Applications/Haunted.app/Contents/MacOS/dednetsctl" \
     /Applications/Haunted.app/Contents/MacOS/dednetsctl; do
     # `set -e` plus a bare `[ ... ] && ...` as the last command of a loop body
     # would kill the script when the test fails, hence the `if`.
