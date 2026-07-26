@@ -35,9 +35,8 @@ starts. Changing it mid-session does nothing until a restart.
 
 ## Tokens
 
-You cannot mint one. Send the user to Console > Settings > API tokens, ask for
-the least the task needs, and have them export `DEDNETS_TOKEN` in the shell that
-starts Claude Code.
+Ask the user for the least the task needs, and have them export `DEDNETS_TOKEN`
+in the shell that starts Claude Code, before it starts.
 
 | The user asked to | Scopes to tick |
 | --- | --- |
@@ -51,15 +50,14 @@ never echo it back in a reply, and never put it into an MCP config you create.
 
 ## The machine at the other end
 
-Enrolling produces an install command that only does something where it runs.
-Settle before enrolling how you will reach that machine (an ssh session you
-already have, a terminal the user drives, or this machine if that is what the
-user meant) and say plainly which one you are using. The command carries a
-one-time join token: treat it as a credential, and if it is used or leaks,
-enroll again for a fresh one rather than reusing it.
+Before enrolling, settle how you will reach the machine being enrolled: an ssh
+session you already have, a terminal the user drives, or this machine if that is
+what the user meant. Say plainly which one you are using. The install command
+carries a join token, so treat it as a credential: do not paste it into a file
+or a commit, and if it leaks, enroll again for a fresh one rather than reusing
+it.
 
 ## Canned workflows
 
-The server publishes prompts for onboarding a host, reviewing the fleet,
-publishing an app, removing a host and troubleshooting a watchdog. Prefer them
-over inventing your own sequence.
+The server publishes prompts for the common workflows. Prefer one of those over
+inventing your own sequence.
