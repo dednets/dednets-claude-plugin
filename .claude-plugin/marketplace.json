@@ -10,7 +10,7 @@
     {
       "name": "dednets",
       "source": "./plugins/dednets",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "description": "Drive your DedNets account from Claude Code: enroll hosts, publish services at public URLs, and set up watchdogs.",
       "category": "devops",
       "author": {

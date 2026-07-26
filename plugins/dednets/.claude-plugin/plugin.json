@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "dednets",
   "displayName": "DedNets",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Drive your DedNets account from Claude Code: enroll hosts, publish services at public URLs, and set up watchdogs through the DedNets MCP server.",
   "author": {
     "name": "DedNets",
