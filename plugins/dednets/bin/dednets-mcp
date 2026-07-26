@@ -1,0 +1,68 @@
+#!/bin/sh
+# Resolves dednetsctl and execs `dednetsctl mcp`, for the Claude Code plugin's
+# bundled .mcp.json (which can only name one fixed command).
+#
+# Why a wrapper and not discovery in the skill: plugin MCP servers start at
+# session start, long before any skill is loaded, so a skill-based resolver
+# would leave the server dead until the model happened to read it. Why not
+# `dednetsctl` on PATH directly: Haunted Terminal users have the CLI inside the
+# app bundle and nothing on PATH.
+#
+# Keep this POSIX sh: no bashisms, every expansion quoted.
+# scripts/sync-claude-plugin_test.sh runs it against a stub, and `sh -n` plus
+# ShellCheck gate it. It is copied verbatim into the public mirror, so the
+# tested artifact is the shipped artifact.
+set -eu
+
+# 1. The console. Claude Code expands ${DEDNETS_CONSOLE:-...} for us, but a host
+#    that does not implement the :- form passes the literal through, and an
+#    empty value would land the CLI on its dev default (127.0.0.1:8080). Both
+#    degrade to the hosted console here. A real URL never starts with a dollar
+#    sign, so "starts with $" is a safe test for an unexpanded placeholder in
+#    any of its spellings.
+console=${DEDNETS_CONSOLE:-}
+case $console in
+'' | '$'*) console=https://console.dednets.com ;;
+esac
+DEDNETS_CONSOLE=$console
+export DEDNETS_CONSOLE
+
+# 2. The token. An unexpanded literal must read as "no token" so the CLI's own
+#    error (which names DEDNETS_TOKEN and the Console page that mints one) is
+#    what the user sees; that message lives in exactly one place.
+token=${DEDNETS_TOKEN:-}
+case $token in
+'$'*) token='' ;;
+esac
+DEDNETS_TOKEN=$token
+export DEDNETS_TOKEN
+
+# 3. Find the CLI. First hit wins; nothing is downloaded here.
+#    TN-59: add `npx -y @dednets/mcp` to this chain (one line) once the package
+#    is published; it belongs after PATH so a locally installed CLI still wins.
+ctl=''
+for cand in \
+    "${DEDNETSCTL:-}" \
+    "$HOME/Applications/Haunted.app/Contents/MacOS/dednetsctl" \
+    /Applications/Haunted.app/Contents/MacOS/dednetsctl; do
+    # `set -e` plus a bare `[ ... ] && ...` as the last command of a loop body
+    # would kill the script when the test fails, hence the `if`.
+    if [ -n "$cand" ] && [ -x "$cand" ]; then
+        ctl=$cand
+        break
+    fi
+done
+if [ -z "$ctl" ]; then
+    ctl=$(command -v dednetsctl 2>/dev/null || true)
+fi
+
+if [ -z "$ctl" ]; then
+    # Same three-part shape as the server's tool errors (libs/mcpserver/
+    # errors.go) so one voice reaches the user wherever the failure happens.
+    echo "dednets mcp failed: cli_not_found" >&2
+    echo "no dednetsctl in DEDNETSCTL, Haunted.app or PATH" >&2
+    echo "fix: install the CLI - https://docs.dednets.com/automation/ai-agent/" >&2
+    exit 1
+fi
+
+exec "$ctl" mcp "$@"

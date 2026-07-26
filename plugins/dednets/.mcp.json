@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "dednets": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/bin/dednets-mcp",
+      "env": {
+        "DEDNETS_CONSOLE": "${DEDNETS_CONSOLE:-https://console.dednets.com}",
+        "DEDNETS_TOKEN": "${DEDNETS_TOKEN:-}"
+      }
+    }
+  }
+}

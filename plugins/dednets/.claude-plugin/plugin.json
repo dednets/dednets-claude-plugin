@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "dednets",
+  "displayName": "DedNets",
+  "version": "0.4.1",
+  "description": "Drive your DedNets account from Claude Code: enroll hosts, publish services at public URLs, and set up watchdogs through the DedNets MCP server.",
+  "author": {
+    "name": "DedNets",
+    "url": "https://dednets.com"
+  },
+  "homepage": "https://docs.dednets.com/automation/ai-agent/",
+  "repository": "https://github.com/dednets/dednets-claude-plugin",
+  "keywords": ["dednets", "networking", "devops", "mcp", "tunnel"]
+}

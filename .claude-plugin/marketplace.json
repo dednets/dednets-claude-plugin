@@ -1,0 +1,23 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "dednets",
+  "description": "The DedNets plugin for Claude Code.",
+  "owner": {
+    "name": "DedNets",
+    "url": "https://dednets.com"
+  },
+  "plugins": [
+    {
+      "name": "dednets",
+      "source": "./plugins/dednets",
+      "version": "0.4.1",
+      "description": "Drive your DedNets account from Claude Code: enroll hosts, publish services at public URLs, and set up watchdogs.",
+      "category": "devops",
+      "author": {
+        "name": "DedNets",
+        "url": "https://dednets.com"
+      },
+      "homepage": "https://docs.dednets.com/automation/ai-agent/"
+    }
+  ]
+}
